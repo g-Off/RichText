@@ -1,6 +1,6 @@
-# Better Text Selection Experience
+# Improving the text selection experience
 
-An explaination of what is better in terms of text selection experience.
+An explanation of how RichText improves text selection.
 
 @Options {
     @AutomaticArticleSubheading(disabled)
@@ -10,25 +10,25 @@ An explaination of what is better in terms of text selection experience.
     @TitleHeading("Explanation")
 }
 
-SwiftUI does offer `.textSelection(.enabled)` view modifier to enable text selection.
+SwiftUI offers the `.textSelection(.enabled)` view modifier to enable text selection.
 
 @TabNavigator {
     @Tab("SwiftUI") {        
         On macOS, it allows:
-        - Full / Partial text selection
-        - Full context menu
+        - Full and partial text selection
+        - A full context menu
         
-        however, on iOS, it ONLY allows:
+        However, on iOS, it allows only:
         - Full text selection
-        - Copy text only
+        - Copy only
         
         @Video(source: "swiftui-text-selection-on-ios.mp4", poster: "swiftui-text-selection-on-ios-poster.png")
     }
 
     @Tab("Rich Text") {
-        ``TextView`` keeps the experience that already available on macOS and fixes the experience for iOS, so you can:
-        - select partial range of text
-        - trigger more actions (e.g. Translate, Lookup, Search, etc.) in the edit menu
+        ``TextView`` preserves the experience on macOS and improves it on iOS, so you can:
+        - Select partial ranges of text
+        - Trigger more actions (for example, Translate, Lookup, and Search) in the edit menu
         
         @Video(source: "textview-text-selection-on-ios.mp4", poster: "textview-text-selection-on-ios-poster.png")
     }
@@ -36,11 +36,11 @@ SwiftUI does offer `.textSelection(.enabled)` view modifier to enable text selec
 
 ### Adopting Text View
 
-RichText offers convenience initializers for developers to instantly getting better selection experience by replacing `Text` with `TextView`:
+RichText offers convenience initializers so you can replace `Text` with `TextView` and get improved selection behavior:
 - ``TextView/init(_:tableName:bundle:comment:)``
 - ``TextView/init(verbatim:)``
 - ``TextView/init(_:)-(S)``
 - ``TextView/init(_:)-(AttributedString)``
 - ``TextView/init(_:)-(LocalizedStringResource)``
 
-> note: These initializers does not support view embeddings. If you want to embed a view, use ``TextView/init(content:)``
+> Note: These initializers do not support view embedding. If you want to embed a view, use ``TextView/init(content:)`` instead.

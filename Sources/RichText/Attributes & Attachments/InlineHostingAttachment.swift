@@ -11,9 +11,9 @@ import Introspection
 
 /// An attachment that hosts an inline SwiftUI view with other text fragments.
 ///
-/// This serves as placeholder attachment to allow TextKit engine to correctly layout suroundding text.
+/// This serves as a placeholder attachment that lets TextKit lay out surrounding text.
 ///
-/// When the underlying platform text view calls its layout function, it will report the origin of all attachments back to SwiftUI view via `Observation` framework.
+/// When the platform text view lays out, it updates each attachment's origin through a Combine-backed `ObservableObject`.
 public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendable, Identifiable {
     /// The SwiftUI view hosted by the attachment.
     public var view: AnyView
@@ -35,7 +35,9 @@ public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendabl
     /// If you don't provide an id explicitly, a random UUID will be created.
     /// Whenever ``TextView`` refreshes, your view will be recreated and refreshed (all states will be reset also).
     public var id: AnyHashable
-    /// The replacement text of this view for both copy/paste and menu actions.
+    /// The replacement text of this view used for copy/paste and some menu actions.
+    ///
+    /// On AppKit, only Copy and Search with Google use the replacement; Lookup, Translate, and Share still use the original text.
     ///
     /// For example, if you copy all text from this ``TextView``, you will get "Hello **World**" (or plain text "Hello World" based on the paste location.)
     ///
