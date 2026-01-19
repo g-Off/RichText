@@ -10,13 +10,13 @@ import SwiftUI
 extension SwiftUI.View {
     /// Sets the default font for the text in this view.
     ///
-    /// `SwiftUI.Font.Resolved` is only available on OS 26 and later. Starting with OS 26, `SwiftUI.Font` can be automatically resolved into `PlatformText`.
+    /// `SwiftUI.Font.Resolved` is only available on OS 26 and later, and starting with OS 26 `SwiftUI.Font` can be resolved into `PlatformFont`.
     ///
-    /// However, if you are also targeting older system versions and want to offer a consistent experience, use this view modifier to explicitly specify a platform font.
+    /// If you target older system versions and want a consistent experience, use this modifier to provide a platform font explicitly.
     ///
     /// ```swift
     /// TextView("TextView")
-    ///     .font(UIFont.systemFont(ofSize: 28)) // This would work consistently across OS versions
+    ///     .font(PlatformFont.systemFont(ofSize: 28)) // This would work consistently across OS versions
     /// ```
     @inlinable
     public nonisolated func font(_ font: PlatformFont?) -> some View {

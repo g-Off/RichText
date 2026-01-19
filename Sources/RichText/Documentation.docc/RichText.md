@@ -14,20 +14,17 @@ RichText provides a supplementary ``TextView``, powered by **TextKit 2**, for Sw
 - ``TextView/font(_:)-(PlatformFont?)``
 - <doc:better-text-selection-experience>
 
-### Text Content
+### Providing text content
 
 - ``TextContent``
 - ``TextContentBuilder``
+- ``TextContentProviding``
 - ``LineBreak``
 - ``Space``
 - ``Tab``
 - ``InterFragment``
 
-### Embed SwiftUI View
+### Embedding SwiftUI view
 
 - ``InlineView``
 - ``InlineHostingAttachment``
-
-### Bridge Your Custom Type
-
-- ``TextContentProviding``

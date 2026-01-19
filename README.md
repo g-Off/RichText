@@ -9,8 +9,8 @@ Powered by **TextKit 2**.
 ## Requirements
 
 - Xcode 26.0+
-- iOS 17.0+
-- macOS 14.0+
+- iOS 16.0+
+- macOS 13.0+
 
 ## Documentation
 
@@ -88,7 +88,7 @@ TextView {
 TextView {
     "Rating: "
     
-    // The whole `HStack` will be either selected or de-selected.
+    // The whole `HStack` will be either selected or deselected.
     HStack(spacing: 2) {
         ForEach(0..<5) { _ in
             Image(systemName: "star.fill")
@@ -102,12 +102,12 @@ TextView {
 
 #### Dynamic Views
 
-If the embeded view contains its own state, you will need to provide a unique view identifier using `.id(_:)` to bind the view's identity, otherwise, its state will be reset whenever the `textContent` is recomputed.
+If the embedded view contains its own state, you will need to provide a unique view identifier using `.id(_:)` to bind the view's identity, otherwise, its state will be reset whenever the `textContent` is recomputed.
 
 In the following example, the state of the globe icon will get reset when `ContentView.body` gets re-computed without explicit id specified.
 
 > [!TIP]
-> You may need to add `.id(_:)` view modifier directly under embeded view.
+> You may need to add `.id(_:)` view modifier directly under embedded view.
 >
 > Currently, `.id(_:)` inside `View.Body` is not recognizable.
 
@@ -155,5 +155,5 @@ If you need to customize font on older OS version, use `PlatformFont` explicitly
 
 ```swift
 TextView("TextView")
-    .font(UIFont.systemFont(ofSize: 28)) // This would work consistently across OS versions.
+    .font(PlatformFont.systemFont(ofSize: 28)) // This would work consistently across OS versions.
 ```
