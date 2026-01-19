@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import Introspection
 
 /// An attachment that hosts an inline SwiftUI view with other text fragments.
@@ -49,10 +50,7 @@ public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendabl
     /// ```
     public var replacement: AttributedString?
     
-    var state: State
-    @Observable
-    final class State {
-        @ObservationIgnored
+    final class State: ObservableObject {
         var size: CGSize {
             didSet {
                 guard size != oldValue else { return }
@@ -60,7 +58,7 @@ public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendabl
             }
         }
         
-        var origin: CGPoint?
+        @Published var origin: CGPoint?
         var onSizeChange: (() -> Void)?
         
         init(size: CGSize, origin: CGPoint? = nil) {
@@ -68,6 +66,7 @@ public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendabl
             self.origin = origin
         }
     }
+    var state: State
 
     @MainActor
     init<Content: View>(

@@ -9,8 +9,8 @@ Powered by **TextKit 2**.
 ## Requirements
 
 - Xcode 26.0+
-- iOS 17.0+
-- macOS 14.0+
+- iOS 16.0+
+- macOS 13.0+
 
 ## Documentation
 

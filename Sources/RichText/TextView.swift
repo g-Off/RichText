@@ -80,19 +80,31 @@ public struct TextView: View {
             .overlay(alignment: .topLeading) {
                 ZStack(alignment: .topLeading) {
                     ForEach(content.attachments) { attachment in
-                        attachment.view
-                            .onGeometryChange(for: CGSize.self, of: \.size) { size in
-                                attachment.state.size = size
-                            }
-                            .offset(
-                                x: attachment.state.origin?.x ?? 0,
-                                y: attachment.state.origin?.y ?? 0
-                            )
-                            .opacity(attachment.state.origin == nil ? 0 : 1)
+                        AttachmentView(view: attachment.view, state: attachment.state)
                     }
                 }
             }
             .clipped()
+    }
+    
+    struct AttachmentView: View {
+        var view: AnyView
+        @ObservedObject var state: InlineHostingAttachment.State
+        
+        var body: some View {
+            view
+                .onGeometryChange(for: CGSize.self, of: \.size) { size in
+                    state.size = size
+                }
+                .offset(
+                    x: state.origin?.x ?? 0,
+                    y: state.origin?.y ?? 0
+                )
+                .opacity(state.origin == nil ? 0 : 1)
+                .onReceive(state.objectWillChange) { _ in
+                    print("Object changed")
+                }
+        }
     }
     
     private var _textView: some View {
