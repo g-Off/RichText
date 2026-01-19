@@ -101,9 +101,6 @@ public struct TextView: View {
                     y: state.origin?.y ?? 0
                 )
                 .opacity(state.origin == nil ? 0 : 1)
-                .onReceive(state.objectWillChange) { _ in
-                    print("Object changed")
-                }
         }
     }
     
