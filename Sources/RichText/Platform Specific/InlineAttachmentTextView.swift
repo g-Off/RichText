@@ -206,16 +206,20 @@ extension InlineAttachmentTextView {
             }
             
             guard let segmentFrame = firstFrame else { return }
+            var origin: CGPoint?
             
-            var origin = textContainerOffset
-            origin.x += segmentFrame.origin.x
-            // align top of the view to the baseline
-            origin.y += baseline + segmentFrame.minY
-            // align the baseline of the view to the "line" baseline
-            origin.y -= attachment.ascender ?? attachment.state.size.height
-            
+            if !segmentFrame.isEmpty {
+                origin = textContainerOffset
+                origin!.x += segmentFrame.origin.x
+                // align top of the view to the baseline
+                origin!.y += baseline + segmentFrame.minY
+                // align the baseline of the view to the "line" baseline
+                origin!.y -= attachment.ascender ?? attachment.state.size.height
+            }
             if attachment.state.origin != origin {
-                attachment.state.origin = origin
+                Task { @MainActor in
+                    attachment.state.origin = origin
+                }
             }
         }
     }
