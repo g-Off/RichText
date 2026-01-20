@@ -71,7 +71,7 @@ public final class InlineHostingAttachment: NSTextAttachment, @unchecked Sendabl
     var state: State
 
     @MainActor
-    init<Content: View>(
+    public init<Content: View>(
         _ content: Content,
         id: AnyHashable? = nil,
         replacement: AttributedString?

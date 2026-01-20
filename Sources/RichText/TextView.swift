@@ -65,7 +65,6 @@ import Introspection
 public struct TextView: View {
     public var content: TextContent
     
-    @State private var attachments: [InlineHostingAttachment] = []
     @Environment(\.fontResolutionContext) private var fontResolutionContext
     
     /// Creates an instance with the given closure to build text content.
@@ -80,19 +79,25 @@ public struct TextView: View {
             .overlay(alignment: .topLeading) {
                 ZStack(alignment: .topLeading) {
                     ForEach(content.attachments) { attachment in
-                        AttachmentView(view: attachment.view, state: attachment.state)
+                        AttachmentView(attachment: attachment)
+                            .equatable()
                     }
                 }
             }
             .clipped()
     }
     
-    struct AttachmentView: View {
-        var view: AnyView
-        @ObservedObject var state: InlineHostingAttachment.State
+    struct AttachmentView: View, @MainActor Equatable {
+        @State var attachment: InlineHostingAttachment
+        @StateObject var state: InlineHostingAttachment.State
+        
+        init(attachment: InlineHostingAttachment) {
+            _attachment = .init(wrappedValue: attachment)
+            _state = .init(wrappedValue: attachment.state)
+        }
         
         var body: some View {
-            view
+            attachment.view
                 .onGeometryChange(for: CGSize.self, of: \.size) { size in
                     state.size = size
                 }
@@ -101,6 +106,10 @@ public struct TextView: View {
                     y: state.origin?.y ?? 0
                 )
                 .opacity(state.origin == nil ? 0 : 1)
+        }
+        
+        static func == (lhs: AttachmentView, rhs: AttachmentView) -> Bool {
+            lhs.attachment.id == rhs.attachment.id
         }
     }
     

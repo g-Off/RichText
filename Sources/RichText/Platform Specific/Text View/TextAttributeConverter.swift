@@ -37,28 +37,38 @@ enum TextAttributeConverter {
                 context.environment.fallbackPlatformFont
             }
             
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = NSTextAlignment(
-                context.environment.multilineTextAlignment,
-                layoutDirection: context.environment.layoutDirection
-            )
-            paragraphStyle.lineSpacing = context.environment.lineSpacing
-            paragraphStyle.allowsDefaultTighteningForTruncation = context.environment.allowsTightening
-            paragraphStyle.baseWritingDirection = NSWritingDirection(context.environment.layoutDirection)
-            paragraphStyle.lineBreakMode = NSLineBreakMode(
-                context.environment.truncationMode,
-                lineLimit: context.environment.lineLimit
-            )
-            if #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *),
-               let lineHeight = context.environment.lineHeight {
-                let (min, max, multiple) = lineHeight._lineSetting(
-                    font: convertedAttributes[.font] as? PlatformFont
+            #if canImport(AppKit)
+            let paragraphStyle = attributes[keyPath: \.appKit.paragraphStyle]
+            #elseif canImport(UIKit)
+            let paragraphStyle = attributes[keyPath: \.uiKit.paragraphStyle]
+            #else
+            fatalError()
+            #endif
+
+            if paragraphStyle == nil {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = NSTextAlignment(
+                    context.environment.multilineTextAlignment,
+                    layoutDirection: context.environment.layoutDirection
                 )
-                paragraphStyle.minimumLineHeight = min
-                paragraphStyle.maximumLineHeight = max
-                paragraphStyle.lineHeightMultiple = multiple
+                paragraphStyle.lineSpacing = context.environment.lineSpacing
+                paragraphStyle.allowsDefaultTighteningForTruncation = context.environment.allowsTightening
+                paragraphStyle.baseWritingDirection = NSWritingDirection(context.environment.layoutDirection)
+                paragraphStyle.lineBreakMode = NSLineBreakMode(
+                    context.environment.truncationMode,
+                    lineLimit: context.environment.lineLimit
+                )
+                if #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *),
+                   let lineHeight = context.environment.lineHeight {
+                    let (min, max, multiple) = lineHeight._lineSetting(
+                        font: convertedAttributes[.font] as? PlatformFont
+                    )
+                    paragraphStyle.minimumLineHeight = min
+                    paragraphStyle.maximumLineHeight = max
+                    paragraphStyle.lineHeightMultiple = multiple
+                }
+                convertedAttributes[.paragraphStyle] = paragraphStyle
             }
-            convertedAttributes[.paragraphStyle] = paragraphStyle
             
             attributes.merge(AttributeContainer(convertedAttributes))
             attributedString[run.range].setAttributes(attributes)

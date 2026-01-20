@@ -45,6 +45,10 @@ public struct TextContent: Hashable {
         self.fragments = fragments
     }
     
+    public init(@TextContentBuilder fragments: () -> TextContent) {
+        self = fragments()
+    }
+    
     /// Creates an instance from an array of fragments.
     public init(_ fragments: [Fragment]) {
         self.fragments = fragments
