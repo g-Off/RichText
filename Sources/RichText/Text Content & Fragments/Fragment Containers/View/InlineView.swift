@@ -39,7 +39,7 @@ public struct InlineView<Content: View>: TextContentProviding {
     public init(
         id: some Hashable,
         replacement: AttributedString? = nil,
-        content: @escaping () -> Content
+        content: () -> Content
     ) {
         self.id = AnyHashable(id)
         self.replacement = replacement
@@ -52,7 +52,7 @@ public struct InlineView<Content: View>: TextContentProviding {
     /// - parameter content: A view builder that builds the content of the view.
     public init(
         replacement: AttributedString? = nil,
-        content: @escaping () -> Content
+        content: () -> Content
     ) {
         self.id = nil
         self.replacement = replacement
@@ -82,7 +82,7 @@ extension InlineView {
     /// - SeeAlso: ``init(string:content:)``
     public init(
         _ replacement: String? = nil,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: () -> Content
     ) {
         var attributedString: AttributedString?
         if let replacement {
@@ -109,7 +109,7 @@ extension InlineView {
     /// - parameter content: A view builder that builds the content of the view.
     public init(
         string: String? = nil,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: () -> Content
     ) {
         let replacement: AttributedString? = if let string {
             AttributedString(stringLiteral: string)
